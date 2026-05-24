@@ -52,6 +52,29 @@ const handler = createMcpHandler(
     )
 
     server.tool(
+      'get_chapter',
+      'Retrieve every verse in a full Bible chapter from the KJV. ' +
+      'Example: book="Genesis", chapter=1.',
+      {
+        book: z.string()
+          .describe('Book name or abbreviation, e.g. "John", "Genesis", "ro", "ps"'),
+        chapter: z.number().int().min(1)
+          .describe('Chapter number (1-indexed)'),
+      },
+      async ({ book, chapter }) => {
+        const verses = getChapter(book, chapter)
+
+        if (verses.length === 0) {
+          return { content: [{ type: 'text', text: `No results found for ${book} ${chapter}.` }] }
+        }
+
+        return {
+          content: [{ type: 'text', text: `${verses[0].book} ${chapter} (KJV)\n\n${formatVerses(verses)}` }]
+        }
+      }
+    )
+
+    server.tool(
       'search_bible',
       'Search the KJV Bible for verses containing a keyword or phrase. ' +
       'Examples: "love your enemies", "faith without works", "fear not".',
