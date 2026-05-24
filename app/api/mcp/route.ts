@@ -75,6 +75,40 @@ const handler = createMcpHandler(
     )
 
     server.tool(
+      'get_context',
+      'Return N verses before and after a given verse for surrounding context. ' +
+      'Useful after search_bible to read the passage around a hit. ' +
+      'Example: book="Romans", chapter=8, verse=28, context=3 returns verses 25–31.',
+      {
+        book: z.string()
+          .describe('Book name or abbreviation, e.g. "John", "Genesis", "ro", "ps"'),
+        chapter: z.number().int().min(1)
+          .describe('Chapter number (1-indexed)'),
+        verse: z.number().int().min(1)
+          .describe('Center verse number'),
+        context: z.number().int().min(1).max(10).optional().default(3)
+          .describe('Number of verses to include before and after the center verse (default 3)'),
+      },
+      async ({ book, chapter, verse, context }) => {
+        const verseStart = Math.max(1, verse - context)
+        const verseEnd = verse + context
+        const verses = getPassage(book, chapter, verseStart, verseEnd)
+
+        if (verses.length === 0) {
+          return { content: [{ type: 'text', text: `No results found for ${book} ${chapter}:${verse}.` }] }
+        }
+
+        const first = verses[0].verse
+        const last = verses[verses.length - 1].verse
+        const ref = `${verses[0].book} ${chapter}:${first}–${last}`
+
+        return {
+          content: [{ type: 'text', text: `${ref} (KJV)\n\n${formatVerses(verses)}` }]
+        }
+      }
+    )
+
+    server.tool(
       'search_bible',
       'Search the KJV Bible for verses containing a keyword or phrase. ' +
       'Examples: "love your enemies", "faith without works", "fear not".',

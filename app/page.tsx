@@ -10,6 +10,10 @@ const tools = [
     desc: 'Retrieve an entire chapter — "Genesis 1", "John 3", "Revelation 22".',
   },
   {
+    name: 'get_context',
+    desc: 'Return the verses surrounding a given reference — useful for reading a passage in context after a search hit.',
+  },
+  {
     name: 'search_bible',
     desc: 'Full-text keyword search across the Bible — "love your enemies", "faith without works".',
   },
