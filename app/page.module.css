@@ -6,8 +6,7 @@
 }
 
 .hero {
-  border-bottom: 1px solid #1e1e24;
-  padding: 72px 24px 64px;
+  padding: 80px 24px 40px;
   text-align: center;
 }
 
@@ -50,10 +49,17 @@
   font-weight: 500;
 }
 
+.animationWrap {
+  display: flex;
+  justify-content: center;
+  padding: 40px 24px 80px;
+}
+
 .content {
   max-width: 800px;
   margin: 0 auto;
   padding: 64px 24px;
+  border-top: 1px solid #1a1a20;
 }
 
 .section {

@@ -1,4 +1,5 @@
 import styles from './page.module.css'
+import McpSearchAnimation from '@/components/McpSearchAnimation'
 
 const tools = [
   {
@@ -36,6 +37,10 @@ export default function Home() {
           Bible text on demand.
         </p>
       </header>
+
+      <div className={styles.animationWrap}>
+        <McpSearchAnimation />
+      </div>
 
       <main className={styles.content}>
         <section className={styles.section}>
